@@ -6,10 +6,10 @@ APRIL, JUNE, SEPTEMBER, NOVEMBER = 30
 def main():
     with open("text.txt", "r") as file:
         step = 0
-        for i in file:
-            step += i
-        calculate(step, )
+        days = 1
+        while days <= 365:
+            step += int(file.readline())
+            days += 1
+        print(step / 12)
 
-def calculate(steps, month):
-    return steps / month
 main()
