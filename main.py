@@ -1,26 +1,15 @@
 import random
-
+JANUARY, MARCH, MAY, JULY, AUGUST, OCTOBER, DECEMBER = 31
+FEBRUARY = 28
+APRIL, JUNE, SEPTEMBER, NOVEMBER = 30
 
 def main():
-    name = input("Name: ")
-    description = input("Desc: ")
+    with open("text.txt", "r") as file:
+        step = 0
+        for i in file:
+            step += i
+        calculate(step, )
 
-    with open("text.html", "w") as file:
-        file.writelines(["\n<!DOCTYPE html>"
-        "\n<html lang='en'>"
-        "\n<head>"
-        "\n<meta charset='UTF-8'>"
-        "\n<title>Title</title>"
-        "\n</head>"
-        "\n<body>"
-        "\n<center>"
-        "\n<h1>"
-        f"{name}"
-        "\n</h1>"
-        "\n<center>"
-        "\n<hr>"
-        f"{description}"
-        "\n</body>"
-        "\n</html>"])
-
+def calculate(steps, month):
+    return steps / month
 main()
