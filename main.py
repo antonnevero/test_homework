@@ -1,9 +1,12 @@
 import random
 
 def main():
-    print(get_count("antan"))
+    print(sum_two_smallest_numbers([2, 4, 6, 8]))
 
-def get_count(sentence):
-    return sum(1 for let in sentence if let in "aeiouAEIOU")
+def sum_two_smallest_numbers(numbers):
+    min_num = min(numbers)
+    numbers.remove(min_num)
+    min_num_2 = min(numbers)
+    return min_num + min_num_2
 
 main()
