@@ -2,7 +2,7 @@ import random
 
 def main():
     month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    names_of_months = ["january", "february", "march", "may", "june", "july", "august", "september", "october",
+    names_of_months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october",
                        "november", "december"]
     with open("text.txt", "r") as file:
         num_of_month = 1
