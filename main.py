@@ -1,15 +1,18 @@
 import random
-JANUARY, MARCH, MAY, JULY, AUGUST, OCTOBER, DECEMBER = 31
-FEBRUARY = 28
-APRIL, JUNE, SEPTEMBER, NOVEMBER = 30
 
 def main():
+    month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    names_of_months = ["january", "february", "march", "may", "june", "july", "august", "september", "october",
+                       "november", "december"]
     with open("text.txt", "r") as file:
-        step = 0
-        days = 1
-        while days <= 365:
-            step += int(file.readline())
-            days += 1
-        print(step / 12)
+        num_of_month = 1
+        for i in month:
+            days = 1
+            step = 0
+            while days <= i:
+                step += int(file.readline())
+                days += 1
+            print(f"Month {names_of_months[num_of_month-1]}: {round(step / i)}")
+            num_of_month += 1
 
 main()
