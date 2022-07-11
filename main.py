@@ -1,12 +1,11 @@
 import random
-
+ROWS = 3
+COLS = 4
 def main():
-    print(sum_two_smallest_numbers([2, 4, 6, 8]))
+    list_2d = [[0 for r in range(COLS)] for c in range(ROWS)]
 
-def sum_two_smallest_numbers(numbers):
-    min_num = min(numbers)
-    numbers.remove(min_num)
-    min_num_2 = min(numbers)
-    return min_num + min_num_2
+    print(list_2d)
+
+
 
 main()
