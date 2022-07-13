@@ -1,11 +1,21 @@
 import random
 
 def main():
-    lottery = []
-    for money in range(7):
-        lottery.append(random.randint(0, 9))
-    for i in lottery:
-        print(i)
+    month = []
+    for m in range(12):
+        month.append(int(input(f"Month {m+1}:")))
+
+    sum = 0
+    for i in month:
+        sum += i
+    month_average = sum / 12
+    maximum = month.index(max(month))
+    minimum = month.index(min(month))
+
+    print(month)
+    print(sum)
+    print(month_average)
+    print(maximum, minimum)
 
 
 main()
