@@ -1,15 +1,11 @@
 import random
 
 def main():
-    sum = []
-    sum_7days = 0
-    for day in range(7):
-        sum.append(int(input(f"Type sales of day {day+1}: ")))
-
-    for money in sum:
-        sum_7days += money
-    print(sum_7days)
-
+    lottery = []
+    for money in range(7):
+        lottery.append(random.randint(0, 9))
+    for i in lottery:
+        print(i)
 
 
 main()
