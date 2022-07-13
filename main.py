@@ -1,12 +1,14 @@
 import random
 
 def main():
-    list_2d = [[0 for i in range(3)] for i in range(5)]
+    sum = []
+    sum_7days = 0
+    for day in range(7):
+        sum.append(int(input(f"Type sales of day {day+1}: ")))
 
-    for r in range(5):
-        for c in range(3):
-            list_2d[r][c] = int(input("Enter number: "))
-    print(list_2d)
+    for money in sum:
+        sum_7days += money
+    print(sum_7days)
 
 
 
