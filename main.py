@@ -1,21 +1,18 @@
 import random
 
 def main():
-    month = []
-    for m in range(12):
-        month.append(int(input(f"Month {m+1}:")))
+    numbers = []
+    with open("text.txt") as file:
+        for c in file:
+            numbers.append(c.strip("\n"))
 
-    sum = 0
-    for i in month:
-        sum += i
-    month_average = sum / 12
-    maximum = month.index(max(month))
-    minimum = month.index(min(month))
+    account_number = input("Enter number: ")
+    if account_number in numbers:
+        print("Ok")
+    else:
+        print("Not ok")
 
-    print(month)
-    print(sum)
-    print(month_average)
-    print(maximum, minimum)
+
 
 
 main()
