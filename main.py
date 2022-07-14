@@ -21,7 +21,7 @@ def main():
         print("Fuck you!")
     print(count)
     print(count_not_right)
-    print(f"Wrong answers for questions {wrong_answers}")
+    print(f"Wrong answers for questions: {wrong_answers}")
 
 
 main()
