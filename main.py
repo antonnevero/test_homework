@@ -1,16 +1,14 @@
 import random
 
 def main():
-    numbers = []
-    with open("text.txt") as file:
-        for c in file:
-            numbers.append(c.strip("\n"))
+    numbers = [1, 2, 5, 8, 10]
+    num = 4
+    bigger_that_n(numbers, num)
 
-    account_number = input("Enter number: ")
-    if account_number in numbers:
-        print("Ok")
-    else:
-        print("Not ok")
+def bigger_that_n(list_of_numbers, n):
+    for l in list_of_numbers:
+        if l > n:
+            print(l)
 
 
 
