@@ -1,27 +1,31 @@
 import random
 
 def main():
-    right_answers = ['A', 'C', 'A', 'A', 'D', 'B', 'C', 'A', 'C', 'B', 'A', 'D', 'C', 'A', 'D', 'C', 'B', 'B', 'D', 'A']
-    student_answers = []
-    wrong_answers = []
-    with open("text.txt") as file:
-        for c in file:
-            student_answers.append(c.strip("\n"))
-    count = 0
-    count_not_right = 0
-    for i in range(len(right_answers)):
-        if right_answers[i] == student_answers[i]:
-            count += 1
-        else:
-            count_not_right += 1
-            wrong_answers.append(i + 1)
-    if count > 14:
-        print("You're good!")
-    else:
-        print("Fuck you!")
-    print(count)
-    print(count_not_right)
-    print(f"Wrong answers for questions: {wrong_answers}")
+    boys = []
+    girls = []
+    with open("BoyNames.txt") as file:
+        for n in file:
+            boys.append(n.rstrip())
+    with open("GirlNames.txt") as file:
+        for n in file:
+            girls.append(n.rstrip())
+    answer = input("Do you want to check Boy, Girl or Both names? B, G, BOTH: ").upper()
+    if answer == "B":
+        boy_name = input("Write boys name: ")
+        if boy_name in boys:
+            print(f"{boy_name} is in the list")
+    elif answer == "G":
+        girl_name = input("Write girls name: ")
+        if girl_name in girls:
+            print(f"{girl_name} is in the list")
+    elif answer == "BOTH":
+        boy_name = input("Write boys name: ")
+        girl_name = input("Write girls name: ")
+        if boy_name in boys:
+            print(f"{boy_name} is in the list")
+        if girl_name in girls:
+            print(f"{girl_name} is in the list")
+
 
 
 main()
