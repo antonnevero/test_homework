@@ -1,29 +1,16 @@
 import random
 
 def main():
-    population = []
-    with open("USPopulation.txt", "r") as file:
-        for p in file:
-            population.append(int(p.rstrip()))
-    average = (population[-1] - population[0]) / 40
-    print(average)
-
-    base_max = 0
-    base_min = population[1] - population[0]
-    year = 1950
-    i = 0
-    y = 0
-    for p in range(1, len(population)):
-        change = population[p] - population[p - 1]
-        if change > base_max:
-            base_max = change
-            i = p
-        elif change < base_min:
-            base_min = change
-            y = p
-    print(year + i)
-    print(year + y)
-
+    winners = []
+    with open("WorldSeriesWinners.txt", "r") as file:
+        for i in file:
+            winners.append(i.rstrip())
+    count = 0
+    team = input("Input team: ")
+    for i in winners:
+        if i == team:
+            count += 1
+    print(count)
 
 
 
