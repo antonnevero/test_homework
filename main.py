@@ -1,17 +1,22 @@
 import random
 
 def main():
-    winners = []
-    with open("WorldSeriesWinners.txt", "r") as file:
-        for i in file:
-            winners.append(i.rstrip())
-    count = 0
-    team = input("Input team: ")
-    for i in winners:
-        if i == team:
-            count += 1
-    print(count)
+    lo_shu = [[4, 9, 2], [3, 5, 7], [8, 1, 6]]
+    print(magic(lo_shu))
+
+def magic(magic_list):
+    first_row = magic_list[0][0] + magic_list[0][1] + magic_list[0][2]
+    second_row = magic_list[1][0] + magic_list[1][1] + magic_list[1][2]
+    third_row = magic_list[2][0] + magic_list[2][1] + magic_list[2][2]
+    first_col = magic_list[0][0] + magic_list[1][0] + magic_list[2][0]
+    second_col = magic_list[0][1] + magic_list[1][1] + magic_list[2][1]
+    third_col = magic_list[0][2] + magic_list[1][2] + magic_list[2][2]
+    first_diag = magic_list[0][2] + magic_list[1][1] + magic_list[2][0]
+    second_diag = magic_list[0][0] + magic_list[1][1] + magic_list[2][2]
 
 
+    return first_row == second_row == third_row == first_col == second_col == third_col == first_diag == second_diag
 
-main()
+
+if __name__ == '__main__':
+    main()
