@@ -2,11 +2,14 @@ import random
 
 
 def main():
-    name = input("YOur name: ")
-    answer = name.split(' ')
-    for i in answer:
-        print(i[0].upper(), end='')
-        print('.', end='')
+    numbers = input("Your numbers: ")
+    list_num = []
+    for i in numbers:
+        list_num.append(int(i))
+    count = 0
+    for i in list_num:
+        count += i
+    print(count)
 
 
 
