@@ -2,14 +2,15 @@ import random
 
 
 def main():
-    numbers = input("Your numbers: ")
-    list_num = []
-    for i in numbers:
-        list_num.append(int(i))
-    count = 0
-    for i in list_num:
-        count += i
-    print(count)
+    user_date = input("Your date: ")
+    list_u = user_date.split('/')
+    date = list_u[0]
+    month = list_u[1]
+    year = list_u[2]
+    if month == '07':
+        month = "July"
+    print(date, month, year + ' y.')
+
 
 
 
