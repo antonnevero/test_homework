@@ -2,17 +2,16 @@ import random
 
 
 def main():
-    answer = input("Enter the sentence: ").lower()
-    result = ''
-    count1 = 0
-    for i in answer:
-        count = 0
-        for j in answer:
-            if j == i:
-                count += 1
-        if count > count1:
-            count1 = count
-            result = i
+    answer = input("Enter the sentence: ")
+    result = answer[0]
+
+    for i in range(1, len(answer)):
+        ch = answer[i]
+
+        if ch.isupper():
+            ch = ch.lower()
+            result = result + " "
+        result = result + ch
     print(result)
 
 if __name__ == '__main__':
