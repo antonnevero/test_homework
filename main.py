@@ -2,27 +2,18 @@ import random
 
 
 def main():
-    answer = input("Enter the sentence: ").upper()
-    vowels = vowel_counter(answer)
-    consonants = consonant_counter(answer)
-    print(vowels, consonants)
-
-def vowel_counter(word):
-    count = 0
-    vowels = 'AEIOU'
-    for i in word:
-        if vowels.find(i) >= 0:
-            count += 1
-    return count
-
-
-def consonant_counter(word):
-    consonants = "BCDFGJKLMNPQSTVXZHRWY"
-    count = 0
-    for i in word:
-        if consonants.find(i) >= 0:
-            count += 1
-    return count
+    answer = input("Enter the sentence: ").lower()
+    result = ''
+    count1 = 0
+    for i in answer:
+        count = 0
+        for j in answer:
+            if j == i:
+                count += 1
+        if count > count1:
+            count1 = count
+            result = i
+    print(result)
 
 if __name__ == '__main__':
     main()
