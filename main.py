@@ -1,123 +1,82 @@
 import random
 
-LOTTERY_NUMS = 69
-MAX_NUM_OVERDUE = 10
+LOTTERY_NUMBERS = 69
+POWERBALL_NUMBERS = 26
 
 
-# Функция get_all_numbers возвращает список с лотерейными
-# числами файла pbnumbers.txt. Числа появляются в том
-# порядке, в каком они были прочитаны из файла.
-def get_all_numbers():
+def main():
+    # Получить список всех чисел лотереи.
+    lottery_list = get_numbers()
+
+    # Создать списки для частоты каждого числа.
+    # Списки инициализируются нулем для каждого элемента.
+    reg_frequency = [0] * (LOTTERY_NUMBERS + 1)
+    pb_frequency = [0] * (POWERBALL_NUMBERS + 1)
+
+    # Получить частоту каждого регулярного числа.
+    for i in range(len(lottery_list[0])):
+        # Получить следующее число в списке.
+        num = lottery_list[0][i]
+
+        # Увеличить частоту этого числа.
+        reg_frequency[num] += 1
+
+    # Получить частоту каждого числа лотереи PowerBall.
+    for i in range(len(lottery_list[1])):
+        # Получить следующее число в списке.
+        num = lottery_list[1][i]
+
+        # Увеличить частоту этого числа.
+        pb_frequency[num] += 1
+
+    # Показать частоту каждого регулярного числа.
+    print('Частоты регулярных чисел')
+    print('------------------------')
+    for i in range(1, len(reg_frequency)):
+        print(i, 'было выбрано', reg_frequency[i], 'раз.')
+
+    # Показать частоту каждого числа лотереи PowerBall.
+    print('\nЧастоты чисел лотереи PowerBall')
+    print('-------------------------------')
+    for i in range(1, len(pb_frequency)):
+        print(i, 'было выбрано', pb_frequency[i], 'раз.')
+
+
+# Функция get_numbers возвращает 2-двумерный список с двумя
+# элементами. Первый элемент - это список регулярных лотерейных
+# чисел, и 2-й элемент - это список чисел лотереи PowerBall.
+def get_numbers():
     # Открыть файл с лотерейными числами.
     # Файл находится в подпапке data
-    pblottery_file = open('text.txt', 'r')
+    pblottery_file = open(r'text.txt', 'r')
 
     # Прочтитать содержимое файла в список.
-    pblottery = pblottery_file.readlines()
+    work_list = pblottery_file.readlines()
 
     # Закрыть файл.
     pblottery_file.close()
 
     # Удалить из каждого элемента символ новой строки.
-    for i in range(len(pblottery)):
-        pblottery[i] = pblottery[i].rstrip('\n')
+    for i in range(len(work_list)):
+        work_list[i] = work_list[i].rstrip('\n')
 
     # Разбить каждый элемент на отдельные числа и сохранить
-    # отдельные регулярные числа в списке под названием lotto_nums.
+    # отдельные регулярные числа в списке под названием lotto_nums
+    # и отдельные числа лотереи PowerBall в список pb_numbers.
     lotto_nums = []
-    for i in range(len(pblottery)):
-        number_set = pblottery[i].split()
-        for j in range(len(number_set)):
+    pb_numbers = []
+    for i in range(len(work_list)):
+        number_set = work_list[i].split()
+        for j in range(len(number_set) - 1):
             lotto_nums.append(int(number_set[j]))
+        pb_numbers.append(int(number_set[len(number_set) - 1]))
 
-    # Вернуть список lotto_nums.
-    return lotto_nums
+    pblottery = [[], []]
+    pblottery[0] = lotto_nums
+    pblottery[1] = pb_numbers
 
-
-def get_last_position(number_list, max_number):
-    # Создать список для последней позиции каждого числа.
-    # Каждый элемент списка инициализируется нулем.
-    last_position = [0] * (max_number + 1)
-
-    for i in range(len(number_list)):
-        # Получить следующее лотерейное число в списке.
-        num = number_list[i]
-
-        # Сохранить позицию этого числа.
-        last_position[num] = i
-
-    # Вернуть список last_position.
-    return last_position
-
-
-# Функция position_of_lowest_value возвращает позицию
-# минимального значения в списке num_list.
-def position_of_lowest_value(num_list):
-    lowest = num_list[1]
-    lowest_position = 1
-    for i in range(2, len(num_list)):
-        if num_list[i] < lowest:
-            lowest = num_list[i]
-            lowest_position = i
-
-    return lowest_position
-
-
-# Функция most_overdue принимает pos_list и возвращает другой
-# список, в котором элемент 0 содержит самое созревшее значение в
-# pos_list, элемент 1 содержит второе самое созревшее значение в
-# pos_list, и т.д.
-def most_overdue(pos_list):
-    # Создать пустой список для самых созревших значений.
-    overdue_sorted = []
-
-    # Сделать копию списка pos_list.
-    temp_list = []
-    for item in pos_list:
-        temp_list.append(item)
-
-    # Получить максимальное значение в списке temp_list.
-    max_value = max(temp_list)
-
-    # Определить максимальное количество созревших
-    # чисел для отслеживания.
-    if MAX_NUM_OVERDUE < len(temp_list):
-        num_overdue = MAX_NUM_OVERDUE
-    else:
-        num_overdue = len(temp_list)
-
-    # Получить самые созревшие числа.
-    for i in range(num_overdue):
-        position = position_of_lowest_value(temp_list)
-        overdue_sorted.append(position)
-        temp_list[position] = max_value + 1
-
-    # Вернуть список common_sorted.
-    return overdue_sorted
-
-
-def main():
-    # Получить список всех лотерейных чисел.
-    lotto_nums = get_all_numbers()
-
-    # Получить список последних позиций.
-    last_position_list = get_last_position(lotto_nums, LOTTERY_NUMS)
-
-    # Получить список самых созревших значений.
-    most_overdue_nums = most_overdue(last_position_list)
-
-    # Определить максимальное количество созревших чисел
-    # для отслеживания.
-    if MAX_NUM_OVERDUE < len(most_overdue_nums):
-        num_overdue = MAX_NUM_OVERDUE
-    else:
-        num_overdue = len(most_overdue_nums)
-
-    # Показать 10 самых "созревших" чисел.
-    print('10 самых "созревших" чисел')
-    print('--------------------------')
-    for i in range(num_overdue):
-        print(most_overdue_nums[i])
+    # Вернуть список pblottery.
+    return pblottery
 
 
 if __name__ == '__main__':
