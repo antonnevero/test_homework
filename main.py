@@ -1,9 +1,34 @@
+import random
+
+STARTING_YEAR = 1993
+ENDING_YEAR = 2013
+
+# Функция get_price принимает строковое значение, которое находится
+# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент с ценой
+# в виде вещественного числа.
 def get_price(str):
     # Разбить строковое значение по дефисам.
     items = str.split(':')
     # Вернуть цену как вещественное число.
     return float(items[1])
 
+# Функция get_month принимает строковое значение, которое находится
+# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ММ
+# в виде целого числа.
+def get_month(str):
+    # Разбить строковое значение по дефисам.
+    items = str.split('-')
+    # Вернуть месяц как целое число.
+    return int(items[0])
+
+# Функция get_day принимает строковое значение, которое находится
+# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ДД
+# в виде целого числа.
+def get_day(str):
+    # Разбить строковое значение по дефисам.
+    items = str.split('-')
+    # Вернуть день как целое число.
+    return int(items[1])
 
 # Функция get_year принимает строковое значение, которое находится
 # в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ГГГГ
@@ -16,50 +41,30 @@ def get_year(str):
     # Вернуть год как целое число.
     return int(date_items[2])
 
+# Функция get_yearly_average имеет два параметра: gas_list и year.
+# Параметр gas_list - это список строковых значений, которые имеют
+# формат ММ-ДД-ГГГГ:Цена. Параметр year - это числовое значение,
+# являющееся годом. Эта функция возвращает среднюю цену для всех
+# элементов, в которых компонент ГГГГ равняется параметру year.
+def get_yearly_average(gas_list, year):
+    # Инициализировать накопитель.
+    total = 0
 
-# Функция display_highest_per_year выполняет обход списка
-# gas_list, показывая самую высокую цену в каждом году.
-def display_highest_per_year(gas_list):
-    current_year = get_year(gas_list[0])
-    highest = get_price(gas_list[0])
+    # Инициализировать счетчик.
+    count = 0
 
-    # Выполнить обход списка
+    # Выполнить обход списка, получая сумму всех цен
+    # за указанный год.
     for e in gas_list:
-        if get_year(e) == current_year:
-            if get_price(e) > highest:
-                highest = get_price(e)
-        else:
-            print('Самая высокая цена в ', current_year, ': $',
-                  format(highest, '.2f'), sep='')
-            current_year = get_year(e)
-            highest = get_price(e)
+        if get_year(e) == year:
+            total += get_price(e)
+            count += 1
 
-    # Показать самую высокую цену для последнего года.
-    print('Самая высокая цена в ', current_year, ': $',
-          format(highest, '.2f'), sep='')
+    # Вычислить среднее.
+    average = total / count
 
-
-# Функция display_lowest_per_year выполняет обход списка
-# gas_list, показывая самую низкую цену в каждом году.
-def display_lowest_per_year(gas_list):
-    current_year = get_year(gas_list[0])
-    lowest = get_price(gas_list[0])
-
-    # Выполнить обход списка.
-    for e in gas_list:
-        if get_year(e) == current_year:
-            if get_price(e) < lowest:
-                lowest = get_price(e)
-        else:
-            print('Самая низкая цена в ', current_year, ': $',
-                  format(lowest, '.2f'), sep='')
-            current_year = get_year(e)
-            lowest = get_price(e)
-
-    # Показать самую низкую цену для последнего года.
-    print('Самая низкая цена в ', current_year, ': $',
-          format(lowest, '.2f'), sep='')
-
+    # Вернуть среднее.
+    return average
 
 def main():
     # Открыть файл.
@@ -69,11 +74,11 @@ def main():
     # Прочитать содержимое файла в список.
     gas_list = gas_file.readlines()
 
-    # Показать самые высокие цены в году.
-    display_highest_per_year(gas_list)
-
-    # Показать самые низкие цены в году.
-    display_lowest_per_year(gas_list)
+    # Показать среднегодовые цены.
+    for i in range(STARTING_YEAR, ENDING_YEAR + 1):
+        print('Средняя цена в ', i,
+              ' составила $ ', format(get_yearly_average(gas_list, i), '.2f'),
+              sep = '')
 
 if __name__ == '__main__':
     main()
