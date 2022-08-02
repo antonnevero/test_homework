@@ -1,11 +1,4 @@
 import random
-
-STARTING_YEAR = 1993
-ENDING_YEAR = 2013
-
-# Функция get_price принимает строковое значение, которое находится
-# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент с ценой
-# в виде вещественного числа.
 def get_price(str):
     # Разбить строковое значение по дефисам.
     items = str.split(':')
@@ -21,15 +14,6 @@ def get_month(str):
     # Вернуть месяц как целое число.
     return int(items[0])
 
-# Функция get_day принимает строковое значение, которое находится
-# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ДД
-# в виде целого числа.
-def get_day(str):
-    # Разбить строковое значение по дефисам.
-    items = str.split('-')
-    # Вернуть день как целое число.
-    return int(items[1])
-
 # Функция get_year принимает строковое значение, которое находится
 # в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ГГГГ
 # в виде целого числа.
@@ -41,30 +25,37 @@ def get_year(str):
     # Вернуть год как целое число.
     return int(date_items[2])
 
-# Функция get_yearly_average имеет два параметра: gas_list и year.
-# Параметр gas_list - это список строковых значений, которые имеют
-# формат ММ-ДД-ГГГГ:Цена. Параметр year - это числовое значение,
-# являющееся годом. Эта функция возвращает среднюю цену для всех
-# элементов, в которых компонент ГГГГ равняется параметру year.
-def get_yearly_average(gas_list, year):
-    # Инициализировать накопитель.
+# Функция display_monthly_averages выполняет обход списка gas_list,
+# вычисляя и показывая среднемесячную цену.
+def display_monthly_averages(gas_list):
+    month_names = ['январь', 'февраль', 'март', 'апрель', 'май',
+                   'июнь', 'июль', 'август', 'сентябрь', 'октябрь',
+                   'ноябрь', 'декабрь']
+    current_month = get_month(gas_list[0])
+    current_year = get_year(gas_list[0])
     total = 0
-
-    # Инициализировать счетчик.
     count = 0
+    average = 0
 
-    # Выполнить обход списка, получая сумму всех цен
-    # за указанный год.
+    # Выполнить обход списка.
     for e in gas_list:
-        if get_year(e) == year:
+        if (get_month(e) == current_month) and (get_year(e) == current_year):
             total += get_price(e)
             count += 1
+        else:
+            average = total / count
+            print('Средняя цена за ', month_names[current_month-1],
+                  ', ', current_year, ': $',
+                  format(average, '.2f'), sep='')
+            current_month = get_month(e)
+            current_year = get_year(e)
+            total = 0
+            count = 0
 
-    # Вычислить среднее.
-    average = total / count
-
-    # Вернуть среднее.
-    return average
+    # Показать среднее значение за последний месяц.
+    print('Средняя цена за ', month_names[current_month-1],
+          ', ', current_year, ': $',
+          format(average, '.2f'), sep='')
 
 def main():
     # Открыть файл.
@@ -74,11 +65,8 @@ def main():
     # Прочитать содержимое файла в список.
     gas_list = gas_file.readlines()
 
-    # Показать среднегодовые цены.
-    for i in range(STARTING_YEAR, ENDING_YEAR + 1):
-        print('Средняя цена в ', i,
-              ' составила $', format(get_yearly_average(gas_list, i), '.2f'),
-              sep = '')
+    # Показать среднемесячные цены.
+    display_monthly_averages(gas_list)
 
 if __name__ == '__main__':
     main()
