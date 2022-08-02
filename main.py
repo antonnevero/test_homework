@@ -1,6 +1,7 @@
 import random
 
-LOTTERY_NUMBERS = 69
+LOTTERY_NUMS = 69
+MAX_NUM_OVERDUE = 10
 
 
 # Функция get_all_numbers возвращает список с лотерейными
@@ -33,81 +34,90 @@ def get_all_numbers():
     return lotto_nums
 
 
-# Функция get_frequency принимает список чисел и определяет
-# частоту каждого значения в списке. Параметр max_value
-# обозначает максимальное значение, хранящееся в списке.
-def get_frequency(number_list, max_value):
-    # Создать список для частоты каждого числа.
+def get_last_position(number_list, max_number):
+    # Создать список для последней позиции каждого числа.
     # Каждый элемент списка инициализируется нулем.
-    frequency = [0] * (max_value + 1)
+    last_position = [0] * (max_number + 1)
+
     for i in range(len(number_list)):
         # Получить следующее лотерейное число в списке.
         num = number_list[i]
 
-        # Увеличить частоту этого числа.
-        frequency[num] += 1
+        # Сохранить позицию этого числа.
+        last_position[num] = i
 
-    # Вернуть частотный список.
-    return frequency
-
-
-# Функция position_of_highest_value возвращает позицию
-# самого большого значения в списке num_list.
-def position_of_highest_value(num_list):
-    highest = 0
-    highest_position = 0
-    for i in range(len(num_list)):
-        if num_list[i] > highest:
-            highest = num_list[i]
-            highest_position = i
-
-    return highest_position
+    # Вернуть список last_position.
+    return last_position
 
 
-# Функция most_common принимает частотный список freq_list и возвращает
-# другой список, в котором элемент 0 содержит позицию самого большого
-# значения в списке freq_list, элемент 1 содержит позицию второго
-# самого большого значения в списке freq_list, и т.д.
-def most_common(freq_list):
-    # Создать пустой список для позиций самых распространенных значений.
-    common_sorted = []
+# Функция position_of_lowest_value возвращает позицию
+# минимального значения в списке num_list.
+def position_of_lowest_value(num_list):
+    lowest = num_list[1]
+    lowest_position = 1
+    for i in range(2, len(num_list)):
+        if num_list[i] < lowest:
+            lowest = num_list[i]
+            lowest_position = i
 
-    # Сделать копию списка freq_list.
+    return lowest_position
+
+
+# Функция most_overdue принимает pos_list и возвращает другой
+# список, в котором элемент 0 содержит самое созревшее значение в
+# pos_list, элемент 1 содержит второе самое созревшее значение в
+# pos_list, и т.д.
+def most_overdue(pos_list):
+    # Создать пустой список для самых созревших значений.
+    overdue_sorted = []
+
+    # Сделать копию списка pos_list.
     temp_list = []
-    for item in freq_list:
+    for item in pos_list:
         temp_list.append(item)
 
-    for i in range(len(temp_list)):
-        position = position_of_highest_value(temp_list)
-        common_sorted.append(position)
-        temp_list[position] = -1
+    # Получить максимальное значение в списке temp_list.
+    max_value = max(temp_list)
+
+    # Определить максимальное количество созревших
+    # чисел для отслеживания.
+    if MAX_NUM_OVERDUE < len(temp_list):
+        num_overdue = MAX_NUM_OVERDUE
+    else:
+        num_overdue = len(temp_list)
+
+    # Получить самые созревшие числа.
+    for i in range(num_overdue):
+        position = position_of_lowest_value(temp_list)
+        overdue_sorted.append(position)
+        temp_list[position] = max_value + 1
 
     # Вернуть список common_sorted.
-    return common_sorted
+    return overdue_sorted
 
 
 def main():
     # Получить список всех лотерейных чисел.
     lotto_nums = get_all_numbers()
 
-    # Получить частоту каждого числа.
-    frequency = get_frequency(lotto_nums, LOTTERY_NUMBERS)
+    # Получить список последних позиций.
+    last_position_list = get_last_position(lotto_nums, LOTTERY_NUMS)
 
-    # Получить список наиболее распространенных значений.
-    sorted_by_most_common = most_common(frequency)
+    # Получить список самых созревших значений.
+    most_overdue_nums = most_overdue(last_position_list)
 
-    # Показать 10 наиболее распространенных чисел.
-    print('10 наиболее распространенных чисел (по убыванию)')
-    print('------------------------------------------------')
-    for i in range(10):
-        print(sorted_by_most_common[i])
+    # Определить максимальное количество созревших чисел
+    # для отслеживания.
+    if MAX_NUM_OVERDUE < len(most_overdue_nums):
+        num_overdue = MAX_NUM_OVERDUE
+    else:
+        num_overdue = len(most_overdue_nums)
 
-    # Показать 10 наименее распространенных чисел.
-    sorted_by_most_common.reverse()
-    print('\n10 наиболее распространенных чисел (по возрастанию)')
-    print('---------------------------------------------------')
-    for i in range(1, 11):
-        print(sorted_by_most_common[i])
+    # Показать 10 самых "созревших" чисел.
+    print('10 самых "созревших" чисел')
+    print('--------------------------')
+    for i in range(num_overdue):
+        print(most_overdue_nums[i])
 
 
 if __name__ == '__main__':
