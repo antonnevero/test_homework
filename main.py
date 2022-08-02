@@ -1,83 +1,84 @@
 import random
 
-LOTTERY_NUMBERS = 69
-POWERBALL_NUMBERS = 26
+STARTING_YEAR = 1993
+ENDING_YEAR = 2013
 
+# Функция get_price принимает строковое значение, которое находится
+# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент с ценой
+# в виде вещественного числа.
+def get_price(str):
+    # Разбить строковое значение по дефисам.
+    items = str.split(':')
+    # Вернуть цену как вещественное число.
+    return float(items[1])
+
+# Функция get_month принимает строковое значение, которое находится
+# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ММ
+# в виде целого числа.
+def get_month(str):
+    # Разбить строковое значение по дефисам.
+    items = str.split('-')
+    # Вернуть месяц как целое число.
+    return int(items[0])
+
+# Функция get_day принимает строковое значение, которое находится
+# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ДД
+# в виде целого числа.
+def get_day(str):
+    # Разбить строковое значение по дефисам.
+    items = str.split('-')
+    # Вернуть день как целое число.
+    return int(items[1])
+
+# Функция get_year принимает строковое значение, которое находится
+# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ГГГГ
+# в виде целого числа.
+def get_year(str):
+    # Разбить строковое значение по двоеточию.
+    items = str.split(':')
+    # Разбить строковое значение по дефисам.
+    date_items = items[0].split('-')
+    # Вернуть год как целое число.
+    return int(date_items[2])
+
+# Функция get_yearly_average имеет два параметра: gas_list и year.
+# Параметр gas_list - это список строковых значений, которые имеют
+# формат ММ-ДД-ГГГГ:Цена. Параметр year - это числовое значение,
+# являющееся годом. Эта функция возвращает среднюю цену для всех
+# элементов, в которых компонент ГГГГ равняется параметру year.
+def get_yearly_average(gas_list, year):
+    # Инициализировать накопитель.
+    total = 0
+
+    # Инициализировать счетчик.
+    count = 0
+
+    # Выполнить обход списка, получая сумму всех цен
+    # за указанный год.
+    for e in gas_list:
+        if get_year(e) == year:
+            total += get_price(e)
+            count += 1
+
+    # Вычислить среднее.
+    average = total / count
+
+    # Вернуть среднее.
+    return average
 
 def main():
-    # Получить список всех чисел лотереи.
-    lottery_list = get_numbers()
-
-    # Создать списки для частоты каждого числа.
-    # Списки инициализируются нулем для каждого элемента.
-    reg_frequency = [0] * (LOTTERY_NUMBERS + 1)
-    pb_frequency = [0] * (POWERBALL_NUMBERS + 1)
-
-    # Получить частоту каждого регулярного числа.
-    for i in range(len(lottery_list[0])):
-        # Получить следующее число в списке.
-        num = lottery_list[0][i]
-
-        # Увеличить частоту этого числа.
-        reg_frequency[num] += 1
-
-    # Получить частоту каждого числа лотереи PowerBall.
-    for i in range(len(lottery_list[1])):
-        # Получить следующее число в списке.
-        num = lottery_list[1][i]
-
-        # Увеличить частоту этого числа.
-        pb_frequency[num] += 1
-
-    # Показать частоту каждого регулярного числа.
-    print('Частоты регулярных чисел')
-    print('------------------------')
-    for i in range(1, len(reg_frequency)):
-        print(i, 'было выбрано', reg_frequency[i], 'раз.')
-
-    # Показать частоту каждого числа лотереи PowerBall.
-    print('\nЧастоты чисел лотереи PowerBall')
-    print('-------------------------------')
-    for i in range(1, len(pb_frequency)):
-        print(i, 'было выбрано', pb_frequency[i], 'раз.')
-
-
-# Функция get_numbers возвращает 2-двумерный список с двумя
-# элементами. Первый элемент - это список регулярных лотерейных
-# чисел, и 2-й элемент - это список чисел лотереи PowerBall.
-def get_numbers():
-    # Открыть файл с лотерейными числами.
+    # Открыть файл.
     # Файл находится в подпапке data
-    pblottery_file = open(r'text.txt', 'r')
+    gas_file = open(r'text.txt', 'r')
 
-    # Прочтитать содержимое файла в список.
-    work_list = pblottery_file.readlines()
+    # Прочитать содержимое файла в список.
+    gas_list = gas_file.readlines()
 
-    # Закрыть файл.
-    pblottery_file.close()
-
-    # Удалить из каждого элемента символ новой строки.
-    for i in range(len(work_list)):
-        work_list[i] = work_list[i].rstrip('\n')
-
-    # Разбить каждый элемент на отдельные числа и сохранить
-    # отдельные регулярные числа в списке под названием lotto_nums
-    # и отдельные числа лотереи PowerBall в список pb_numbers.
-    lotto_nums = []
-    pb_numbers = []
-    for i in range(len(work_list)):
-        number_set = work_list[i].split()
-        for j in range(len(number_set) - 1):
-            lotto_nums.append(int(number_set[j]))
-        pb_numbers.append(int(number_set[len(number_set) - 1]))
-
-    pblottery = [[], []]
-    pblottery[0] = lotto_nums
-    pblottery[1] = pb_numbers
-
-    # Вернуть список pblottery.
-    return pblottery
-
+    # Показать среднегодовые цены.
+    for i in range(STARTING_YEAR, ENDING_YEAR + 1):
+        print('Средняя цена в ', i,
+              ' составила $', format(get_yearly_average(gas_list, i), '.2f'),
+              sep = '')
 
 if __name__ == '__main__':
     main()
