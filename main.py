@@ -1,18 +1,9 @@
-import random
 def get_price(str):
     # Разбить строковое значение по дефисам.
     items = str.split(':')
     # Вернуть цену как вещественное число.
     return float(items[1])
 
-# Функция get_month принимает строковое значение, которое находится
-# в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ММ
-# в виде целого числа.
-def get_month(str):
-    # Разбить строковое значение по дефисам.
-    items = str.split('-')
-    # Вернуть месяц как целое число.
-    return int(items[0])
 
 # Функция get_year принимает строковое значение, которое находится
 # в формате ММ-ДД-ГГГГ:Цена. Она возвращает компонент ГГГГ
@@ -25,37 +16,50 @@ def get_year(str):
     # Вернуть год как целое число.
     return int(date_items[2])
 
-# Функция display_monthly_averages выполняет обход списка gas_list,
-# вычисляя и показывая среднемесячную цену.
-def display_monthly_averages(gas_list):
-    month_names = ['январь', 'февраль', 'март', 'апрель', 'май',
-                   'июнь', 'июль', 'август', 'сентябрь', 'октябрь',
-                   'ноябрь', 'декабрь']
-    current_month = get_month(gas_list[0])
+
+# Функция display_highest_per_year выполняет обход списка
+# gas_list, показывая самую высокую цену в каждом году.
+def display_highest_per_year(gas_list):
     current_year = get_year(gas_list[0])
-    total = 0
-    count = 0
-    average = 0
+    highest = get_price(gas_list[0])
+
+    # Выполнить обход списка
+    for e in gas_list:
+        if get_year(e) == current_year:
+            if get_price(e) > highest:
+                highest = get_price(e)
+        else:
+            print('Самая высокая цена в ', current_year, ': $',
+                  format(highest, '.2f'), sep='')
+            current_year = get_year(e)
+            highest = get_price(e)
+
+    # Показать самую высокую цену для последнего года.
+    print('Самая высокая цена в ', current_year, ': $',
+          format(highest, '.2f'), sep='')
+
+
+# Функция display_lowest_per_year выполняет обход списка
+# gas_list, показывая самую низкую цену в каждом году.
+def display_lowest_per_year(gas_list):
+    current_year = get_year(gas_list[0])
+    lowest = get_price(gas_list[0])
 
     # Выполнить обход списка.
     for e in gas_list:
-        if (get_month(e) == current_month) and (get_year(e) == current_year):
-            total += get_price(e)
-            count += 1
+        if get_year(e) == current_year:
+            if get_price(e) < lowest:
+                lowest = get_price(e)
         else:
-            average = total / count
-            print('Средняя цена за ', month_names[current_month-1],
-                  ', ', current_year, ': $',
-                  format(average, '.2f'), sep='')
-            current_month = get_month(e)
+            print('Самая низкая цена в ', current_year, ': $',
+                  format(lowest, '.2f'), sep='')
             current_year = get_year(e)
-            total = 0
-            count = 0
+            lowest = get_price(e)
 
-    # Показать среднее значение за последний месяц.
-    print('Средняя цена за ', month_names[current_month-1],
-          ', ', current_year, ': $',
-          format(average, '.2f'), sep='')
+    # Показать самую низкую цену для последнего года.
+    print('Самая низкая цена в ', current_year, ': $',
+          format(lowest, '.2f'), sep='')
+
 
 def main():
     # Открыть файл.
@@ -65,8 +69,11 @@ def main():
     # Прочитать содержимое файла в список.
     gas_list = gas_file.readlines()
 
-    # Показать среднемесячные цены.
-    display_monthly_averages(gas_list)
+    # Показать самые высокие цены в году.
+    display_highest_per_year(gas_list)
+
+    # Показать самые низкие цены в году.
+    display_lowest_per_year(gas_list)
 
 if __name__ == '__main__':
     main()
