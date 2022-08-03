@@ -2,7 +2,7 @@ import random
 
 
 def main():
-    crypted_word = ''
+    uncrypted_word = ''
     codes = {
         'a': '%',
         'n': '!',
@@ -13,9 +13,10 @@ def main():
         text_list = file.readlines()
     word = (''.join(text_list)).lower()
     for i in word:
-        if i in codes:
-            crypted_word += codes[i]
-    print(crypted_word)
+        for k, v in codes.items():
+            if i == v:
+                uncrypted_word += k
+    print(uncrypted_word)
 
 
 if __name__ == '__main__':
