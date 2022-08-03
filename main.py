@@ -2,29 +2,20 @@ import random
 
 
 def main():
-    right = 0
-    wrong = 0
-    next = 0
-    dict = {
-        'Ukraine': "Kyiv",
-        'USA': "Washington",
-        'Australia': 'Canberra',
-        'Portugal': 'Lisbon',
-        'England': 'London'
+    crypted_word = ''
+    codes = {
+        'a': '%',
+        'n': '!',
+        't': '$',
+        'o': '#'
     }
-    while next < 5:
-        country, capital = dict.popitem()
-        answer = input(f"What is the capital of {country}: ").title()
-        if answer == capital:
-            print('Right!')
-            right += 1
-        else:
-            print("Wrong!")
-            wrong += 1
-        next += 1
-        print(next)
-
-    print(f"Right answers - {right}, wrong answers - {wrong}")
+    with open('text.txt', 'r') as file:
+        text_list = file.readlines()
+    word = (''.join(text_list)).lower()
+    for i in word:
+        if i in codes:
+            crypted_word += codes[i]
+    print(crypted_word)
 
 
 if __name__ == '__main__':
