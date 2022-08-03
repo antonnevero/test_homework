@@ -2,13 +2,15 @@ import random
 
 
 def main():
-    word_set = set()
+    dict = {}
     with open('text.txt', 'r') as file:
         for w in file.readlines():
-            word_set.add(w.rstrip('\n'))
-
-    for i in word_set:
-        print(i)
+            word = w.rstrip('\n')
+            if word in dict:
+                dict[word] = 2
+            else:
+                dict[word] = 1
+    print(dict)
 
 
 if __name__ == '__main__':
