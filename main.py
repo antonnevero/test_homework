@@ -2,22 +2,39 @@ import random
 
 
 def main():
-    text1 = set()
-    text2 = set()
-    with open('text.txt', 'r') as file:
+    START = 1903
+    FINISH = 2009
+    dict1 = {}
+    teams = []
+    years = []
+    team = ''
+    with open("text.txt", 'r') as file:
         for i in file.readlines():
-            i = i.rstrip('\n')
-            text1.add(i)
+            teams.append(i.rstrip('\n'))
 
-    with open('text2.txt', 'r') as file:
-        for i in file.readlines():
-            i = i.rstrip('\n')
-            text2.add(i)
-    print(text1.symmetric_difference(text2))
-    print(text1 | text2)
-    print(text1 - text2)
-    print(text2 - text1)
-    print(text2 & text1)
+    for i in teams:
+        score = 0
+        for j in teams:
+            if i == j:
+                score += 1
+        dict1[i] = score
+
+    for i in range(START, FINISH+1):
+        if i == 1904 or i == 1994:
+            continue
+        else:
+            years.append(i)
+
+    dict2 = dict(zip(years, teams))
+
+    answer = int(input("Enter the year: "))
+    for k, v in dict2.items():
+        if answer == k:
+            team = v
+            print(f"In {answer} winner - {v}")
+    for k,v in dict1.items():
+        if team == k:
+            print(f"Number of all win - {v}")
 
 
 
