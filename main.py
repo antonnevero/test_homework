@@ -9,12 +9,16 @@ QUIT = 5
 
 
 def main():
-    # with open('text.txt', "rb")
-    contacts = {}
+    continue_program = True
+    try:
+        with open('contacts.dat', "rb") as file:
+            contacts = pickle.load(file)
+    except FileNotFoundError:
+        contacts = {}
+        with open('contacts.dat', 'wb') as file:
+            pickle.dump(contacts, file)
 
-    choice = 0
-
-    while choice != QUIT:
+    while continue_program:
         choice = get_menu()
 
         if choice == LOOK_UP:
@@ -25,6 +29,10 @@ def main():
             change(contacts)
         elif choice == DELETE:
             delete(contacts)
+        elif choice == QUIT:
+            with open('contacts.dat', 'wb') as file:
+                pickle.dump(contacts, file)
+            continue_program = False
 
 
 def get_menu():
