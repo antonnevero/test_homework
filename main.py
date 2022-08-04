@@ -1,41 +1,81 @@
 import random
+import pickle
+
+LOOK_UP = 1
+ADD = 2
+CHANGE = 3
+DELETE = 4
+QUIT = 5
 
 
 def main():
-    START = 1903
-    FINISH = 2009
-    dict1 = {}
-    teams = []
-    years = []
-    team = ''
-    with open("text.txt", 'r') as file:
-        for i in file.readlines():
-            teams.append(i.rstrip('\n'))
+    # with open('text.txt', "rb")
+    contacts = {}
 
-    for i in teams:
-        score = 0
-        for j in teams:
-            if i == j:
-                score += 1
-        dict1[i] = score
+    choice = 0
 
-    for i in range(START, FINISH+1):
-        if i == 1904 or i == 1994:
-            continue
-        else:
-            years.append(i)
+    while choice != QUIT:
+        choice = get_menu()
 
-    dict2 = dict(zip(years, teams))
+        if choice == LOOK_UP:
+            look_up(contacts)
+        elif choice == ADD:
+            add(contacts)
+        elif choice == CHANGE:
+            change(contacts)
+        elif choice == DELETE:
+            delete(contacts)
 
-    answer = int(input("Enter the year: "))
-    for k, v in dict2.items():
-        if answer == k:
-            team = v
-            print(f"In {answer} winner - {v}")
-    for k,v in dict1.items():
-        if team == k:
-            print(f"Number of all win - {v}")
 
+def get_menu():
+    print("Names and Emails")
+    print('----------------')
+    print('1 - find email')
+    print('2 - add new email')
+    print('3 - change email')
+    print('4 - delete email')
+    print('5 - quit')
+
+    choice = int(input("Make your choice: "))
+
+    if choice < LOOK_UP or choice > QUIT:
+        choice = int(input("Make your choice: "))
+
+    return choice
+
+
+def look_up(contacts):
+    name = input("Enter name: ")
+    print(contacts.get(name, "Not found"))
+
+
+def add(contacts):
+    name = input('Enter name: ')
+    email = input('Enter email: ')
+
+    if name not in contacts:
+        contacts[name] = email
+    else:
+        print("Name is already in the list")
+
+
+def change(contacts):
+    name = input("Enter name: ")
+
+    if name in contacts:
+        email = input("Enter email: ")
+        contacts[name] = email
+    else:
+        print("Name is not found")
+
+
+def delete(contacts):
+    name = input("Enter name: ")
+
+    if name in contacts:
+        del contacts[name]
+    else:
+        print("Name is not found")
 
 
 if __name__ == '__main__':
