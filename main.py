@@ -2,15 +2,23 @@ import random
 
 
 def main():
-    dict = {}
+    text1 = set()
+    text2 = set()
     with open('text.txt', 'r') as file:
-        for w in file.readlines():
-            word = w.rstrip('\n')
-            if word in dict:
-                dict[word] = 2
-            else:
-                dict[word] = 1
-    print(dict)
+        for i in file.readlines():
+            i = i.rstrip('\n')
+            text1.add(i)
+
+    with open('text2.txt', 'r') as file:
+        for i in file.readlines():
+            i = i.rstrip('\n')
+            text2.add(i)
+    print(text1.symmetric_difference(text2))
+    print(text1 | text2)
+    print(text1 - text2)
+    print(text2 - text1)
+    print(text2 & text1)
+
 
 
 if __name__ == '__main__':
