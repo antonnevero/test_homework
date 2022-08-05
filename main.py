@@ -1,42 +1,28 @@
-class Pet:
+class Car:
 
-    def __init__(self, name, animal_type, age):
-        self.__name = name
-        self.__animal_type = animal_type
-        self.__age = age
+    def __init__(self, year_model, make):
+        self.__year_model = year_model
+        self.__make = make
+        self.__speed = 0
 
-    def set_name(self, name):
-        self.__name = name
+    def accelerate(self):
+        self.__speed += 5
 
-    def set_animal_type(self, animal_type):
-        self.__animal_type = animal_type
+    def break_car(self):
+        self.__speed -= 5
 
-    def set_age(self, age):
-        self.__age = age
-
-    def get_name(self):
-        return self.__name
-
-    def get_animal_type(self):
-        return self.__animal_type
-
-    def get_age(self):
-        return self.__age
-
-    def __str__(self):
-        return self.__author, self.__header, self.__publisher
-
+    def get_speed(self):
+        return self.__speed
 
 def main():
-    name = input("Name: ")
-    animal_type = input("Animal_type: ")
-    age = input("age: ")
-    pet = Pet(name, animal_type, age)
+    car = Car(2017, 'Dodge')
+    for i in range(5):
+        car.accelerate()
+        print(car.get_speed())
 
-    print(pet.get_name())
-    print(pet.get_animal_type())
-    print(pet.get_age())
-
+    for i in range(5):
+        car.break_car()
+        print(car.get_speed())
 
 if __name__ == '__main__':
     main()
