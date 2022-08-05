@@ -1,89 +1,69 @@
-import random
-import pickle
-
-LOOK_UP = 1
-ADD = 2
-CHANGE = 3
-DELETE = 4
-QUIT = 5
+# Глобальная константа для выигрышного количества карт
+MAX = 21
 
 
+# Главная функция
 def main():
-    continue_program = True
-    try:
-        with open('contacts.dat', "rb") as file:
-            contacts = pickle.load(file)
-    except FileNotFoundError:
-        contacts = {}
-        with open('contacts.dat', 'wb') as file:
-            pickle.dump(contacts, file)
+    # Локальные переменные
+    hand1 = 0
+    hand2 = 0
+    deck = create_deck()
 
-    while continue_program:
-        choice = get_menu()
+    while hand1 <= MAX and hand2 <= MAX:
+        # Раздать карты каждому игроку и вычислить стоимость
+        # комбинации карт на руках.
+        card1, value1 = deck.popitem()
+        hand1 = update_hand_value(hand1, value1, card1)
 
-        if choice == LOOK_UP:
-            look_up(contacts)
-        elif choice == ADD:
-            add(contacts)
-        elif choice == CHANGE:
-            change(contacts)
-        elif choice == DELETE:
-            delete(contacts)
-        elif choice == QUIT:
-            with open('contacts.dat', 'wb') as file:
-                pickle.dump(contacts, file)
-            continue_program = False
+        card2, value2 = deck.popitem()
+        hand2 = update_hand_value(hand2, value2, card2)
 
+        print('Игроку 1 сдана карта', card1)
+        print('Игроку 2 сдана карта', card2)
+        print()
 
-def get_menu():
-    print("Names and Emails")
-    print('----------------')
-    print('1 - find email')
-    print('2 - add new email')
-    print('3 - change email')
-    print('4 - delete email')
-    print('5 - quit')
-
-    choice = int(input("Make your choice: "))
-
-    if choice < LOOK_UP or choice > QUIT:
-        choice = int(input("Make your choice: "))
-
-    return choice
-
-
-def look_up(contacts):
-    name = input("Enter name: ")
-    print(contacts.get(name, "Not found"))
-
-
-def add(contacts):
-    name = input('Enter name: ')
-    email = input('Enter email: ')
-
-    if name not in contacts:
-        contacts[name] = email
+    # Determine the winner.
+    if hand1 > MAX and hand2 > MAX:
+        print("Победителя нет.")
+    elif hand1 > 21:
+        print("Игрок 2 выиграл.")
     else:
-        print("Name is already in the list")
+        print("Игрок 1 выиграл.")
 
 
-def change(contacts):
-    name = input("Enter name: ")
+# Функция create_deck создает колоду карт и возвращает колоду.
+def create_deck():
+    # Задать локальные переменные
+    suits = ['пик', 'червей', 'крестей', 'бубей']
+    special_values = {'туз': 1, 'король': 10, 'дама': 10, 'валет': 10}
 
-    if name in contacts:
-        email = input("Enter email: ")
-        contacts[name] = email
+    # Создать список всех достоинств карт
+    numbers = ['туз', 'король', 'дама', 'валет']
+    for i in range(2, 11):
+        numbers.append(str(i))
+
+    # Инициализировать колоду
+    deck = {}
+    for suit in suits:
+        for num in numbers:
+            # Значения 2-10.
+            if num.isnumeric():
+                deck[num + ' ' + suit] = int(num)
+            # Туз, король, дама или валет.
+            else:
+                deck[num + ' ' + suit] = special_values[num]
+    return deck
+
+
+def update_hand_value(hand, value, card):
+    if not card.startswith('Туз'):
+        return hand + value
+    # Добавление 11 вызовет превышение максимума.
+    elif hand > 10:
+        # По умолчанию значение 1.
+        return hand + value
     else:
-        print("Name is not found")
-
-
-def delete(contacts):
-    name = input("Enter name: ")
-
-    if name in contacts:
-        del contacts[name]
-    else:
-        print("Name is not found")
+        return hand + 11
 
 
 if __name__ == '__main__':
