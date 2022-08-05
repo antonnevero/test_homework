@@ -1,28 +1,22 @@
-class Car:
+class Employee:
 
-    def __init__(self, year_model, make):
-        self.__year_model = year_model
-        self.__make = make
-        self.__speed = 0
+    def __init__(self, name, id, department, job_title):
+        self.__name = name
+        self.__id = id
+        self.__department = department
+        self.__job_title = job_title
 
-    def accelerate(self):
-        self.__speed += 5
-
-    def break_car(self):
-        self.__speed -= 5
-
-    def get_speed(self):
-        return self.__speed
+    def __str__(self):
+        return f'Name - {self.__name}, id - {self.__id}, department - {self.__department}, job title - {self.__job_title}'
 
 def main():
-    car = Car(2017, 'Dodge')
-    for i in range(5):
-        car.accelerate()
-        print(car.get_speed())
+    e1 = Employee('Susan', 47899, 'Account', 'Vice-President')
+    e2 = Employee('Mark', 39119, 'IT', 'Programmer')
+    e3 = Employee('Joe', 81774, 'Account', 'production')
 
-    for i in range(5):
-        car.break_car()
-        print(car.get_speed())
+    print(e1)
+    print(e2)
+    print(e3)
 
 if __name__ == '__main__':
     main()
