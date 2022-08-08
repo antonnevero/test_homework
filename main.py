@@ -76,7 +76,7 @@ def main():
     print(procedure1)
     print(procedure2)
     print(procedure3)
-    print(f"Sum - {procedure1.get_price() + procedure2.get_price() + procedure3.get_price()}")
+    print(f"Sum is {procedure1.get_price() + procedure2.get_price() + procedure3.get_price()}")
 
 if __name__ == '__main__':
     main()
