@@ -34,15 +34,32 @@ class ProdactionWorker(Employee):
     def get_pay(self):
         return self.__pay
 
+class ShiftSupervisor(Employee):
+    def __init__(self, name, number, year_pay, premium_pay):
+        Employee.__init__(self, name, number)
+        self.__year_pay = year_pay
+        self.__premium_pay = premium_pay
+
+    def set_year_pay(self, year_pay):
+        self.__year_pay = year_pay
+
+    def set_premium_pay(self, premium_pay):
+        self.__premium_pay = premium_pay
+
+    def get_year_pay(self):
+        return self.__year_pay
+
+    def get_premium_pay(self):
+        return self.__premium_pay
 
 def main():
     name = input("Write name:")
     number = int(input("Write number:"))
-    shift = int(input("Write shift:"))
-    pay = float(input("Write pay:"))
-    worker1 = ProdactionWorker(name, number, shift, pay)
+    year_pay = int(input("Write year_pay:"))
+    premium_pay = float(input("Write premium_pay:"))
+    worker1 = ShiftSupervisor(name, number, year_pay, premium_pay)
 
-    print(worker1.get_pay(), worker1.get_shift(), worker1.get_name(), worker1.get_number())
+    print(worker1.get_name(), worker1.get_number(), worker1.get_premium_pay(), worker1.get_year_pay())
 
 if __name__ == '__main__':
     main()
