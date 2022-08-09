@@ -1,127 +1,160 @@
-PANTS = 1
-SHIRT = 2
-DRESS = 3
-SOCKS = 4
-SWEATER = 5
+class Question:
+    def __init__(self, question, answer1, answer2, answer3, answer4, solution):
+        self.__question = question
+        self.__answer1 = answer1
+        self.__answer2 = answer2
+        self.__answer3 = answer3
+        self.__answer4 = answer4
+        self.__solution = solution
 
+    def set_question(self, question):
+        self.__question = question
 
-class RetailItem:
-    def __init__(self, description, inventory, price):
-        self.__description = description
-        self.__inventory = inventory
-        self.__price = price
+    def set_answer1(self, answer1):
+        self.__answer1 = answer1
 
-    def set_description(self, description):
-        self.__description = description
+    def set_answer2(self, answer2):
+        self.__answer2 = answer2
 
-    def set_inventory(self, inventory):
-        self.__inventory = inventory
+    def set_answer3(self, answer3):
+        self.__answer3 = answer3
 
-    def set_price(self, price):
-        self.__price = price
+    def set_answer4(self, answer4):
+        self.__answer4 = answer4
 
-    def get_description(self):
-        return self.__description
+    def set_solution(self, solution):
+        self.__solution = solution
 
-    def get_inventory(self):
-        return self.__inventory
+    def get_question(self):
+        return self.__question
 
-    def get_price(self):
-        return self.__price
+    def get_answer1(self):
+        return self.__answer1
+
+    def get_answer2(self):
+        return self.__answer2
+
+    def get_answer3(self):
+        return self.__answer3
+
+    def get_answer4(self):
+        return self.__answer4
+
+    def get_solution(self):
+        return self.__solution
 
     def __str__(self):
-        result = 'Описание: ' + self.get_description() + '\n' + \
-                 'Единиц на складе: ' + str(self.get_inventory()) + \
-                 '\nЦена: $' + str(self.get_price())
+        result = self.get_question() + '\n' + \
+                 '1. ' + self.get_answer1() + '\n' + \
+                 '2. ' + self.get_answer2() + '\n' + \
+                 '3. ' + self.get_answer3() + '\n' + \
+                 '4. ' + self.get_answer4()
         return result
 
+    def isCorrect(self, answer):
+        return answer == self.get_solution()
 
-class CashRegister:
-
-    def __init__(self):
-        self.__item_list = []
-
-    def purchase_item(self, item):
-        self.__item_list.append(item)
-
-    def get_total(self):
-        sum = 0
-        for i in self.__item_list:
-            sum += i.get_price()
-        return sum
-
-    def show_items(self):
-        for i in self.__item_list:
-            print(i)
-
-    def clear(self):
-        self.__item_list = []
 
 def main():
+    first_points = 0
+    second_points = 0
+    player = ''
 
-    # Создать продаваемые товары.
-    pants = RetailItem('Брюки', 10, 19.99)
-    shirt = RetailItem('Рубашка', 15, 12.50)
-    dress = RetailItem('Платье', 3, 79.00)
-    socks = RetailItem('Носки', 50, 1.00)
-    sweater = RetailItem('Свитер', 5, 49.99)
+    # Создать список вопросов.
+    questions = get_questions()
 
-    # Создать словарь продаваемых товаров.
-    sale_items = {PANTS: pants, SHIRT: shirt,
-                  DRESS: dress, SOCKS: socks,
-                  SWEATER: sweater}
+    for i in range(10):
 
-    # Создать кассовый аппарат.
-    register = CashRegister()
-
-    # Инициализировать проверку цикла.
-    checkout = 'Н'
-
-    # Пользователь хочет приобрести дополнительные товары:
-    while checkout == 'Н':
-
-        user_choice = get_user_choice()
-        item = sale_items[user_choice]
-        if item.get_inventory() == 0:
-            print('Этого товара нет в наличии.')
+        if i % 2 == 0:
+            player = 'Один'
         else:
-            register.purchase_item(item)
+            player = 'Два'
+        print('Вопрос для игрока ', player, ':')
 
-            # Обновить товарную позицию
-            new_item = RetailItem(item.get_description(),
-                                         item.get_inventory() - 1,
-                                         item.get_price())
-            sale_items[user_choice] = new_item
+        current = questions[i]
+        print(current)
+        user_answer = int(input('Введите ваше решение (номер' + \
+                                ' между 1 и 4): '))
+        if current.isCorrect(user_answer):
+            if player == 'Один':
+                first_points += 1
+            else:
+                second_points += 1
+            print('Это правильный ответ.')
+            print()
+        else:
+            print('Неправильно. Правильный отет', \
+                  current.get_solution())
+            print()
 
-            checkout = input('Вы готовы оформить покупку (Д/Н)? ')
+    print('Первый игрок заработал', first_points, 'очков.')
+    print('Второй игрок заработал', second_points, 'очков.')
+    if first_points == second_points:
+        print('Ничья.')
+    elif first_points > second_points:
+        print('Первый игрок побеждает в игре.')
+    else:
+        print('Второй игрок побеждает в игре.')
 
-    print()
-    print('Сумма Вашей покупки составляет: ',
-          format(register.get_total(), '.2f'))
-    print()
-    register.show_items()
-    register.clear()
 
+def get_questions():
+    questions = []
 
-def get_user_choice():
-    print('Menu')
-    print('---------------------------------')
-    print('1. Брюки')
-    print('2. Рубашка')
-    print('3. Платье')
-    print('4. Носки')
-    print('5. Свитер')
-    print()
+    # Создать словарь вопросов и добавить в список.
+    question1 = Question('Сколько дней в лунном ' + \
+                                  'году?', '354', '365', \
+                                  '243', '379', 1)
+    questions.append(question1)
+    question2 = Question('Какая самая большая планета?', \
+                                  'Марс', 'Юпитер', 'Земля', \
+                                  'Плутон', 2)
+    questions.append(question2)
+    question3 = Question('Какой кит самый ' + \
+                                  'большой?', 'Косатка', \
+                                  'Горбатый кит', \
+                                  'Белуга', 'Синий кит', 4)
+    questions.append(question3)
+    question4 = Question('Какой динозавр мог летать?', \
+                                  'Трицератопс', 'Тираннозавр', \
+                                  'Птеранодон', 'Диплодок', 3)
+    questions.append(question4)
+    question5 = Question('Какой из этих героев книги ' + \
+                                  'о Винни Пухе является осликом?', \
+                                  'Пух', 'Иа-Иа', 'Пятачок', \
+                                  'Канга', 2)
+    questions.append(question5)
+    question6 = Question('Какая из них самая жаркая планета?', \
+                                  'Марс', 'Плутон', 'Земля', \
+                                  'Венера', 4)
+    questions.append(question6)
+    question7 = Question('У какого динозавра был самый ' + \
+                                  'большой мозг по сравнению с ' + \
+                                  ' телом тела?', 'Троодон', \
+                                  'Стегозавр', \
+                                  'Ихтиозавр', 'Гигантораптор', 1)
+    questions.append(question7)
+    question8 = Question('Какой из пингвинов самый ' + \
+                                  'крупный?', \
+                                  'Антарктический пингвин', \
+                                  'Золотоволосый пингвин', \
+                                  'Императорский пингвин', \
+                                  'Белокрылый пингвин', 3)
+    questions.append(question8)
+    question9 = Question("В какой сказке героем " + \
+                                  'является обезъянка?', \
+                                  'Винни Пух', \
+                                  'Любопытный Джордж', 'Хортон', \
+                                  'Гуфи', 2)
+    questions.append(question9)
+    question10 = Question('Сколько длится год на Марсе?', \
+                                   '550 земных дней', \
+                                   '498 земных дней', \
+                                   '126 земных дней', \
+                                   '687 земных дней', 4)
+    questions.append(question10)
 
-    choice = int(input('Введите пункт меню товара, ' +
-                       'который вы хотели бы приобрести: '))
-    print()
+    return questions
 
-    while choice > SWEATER or choice < PANTS:
-        choice = int(input('Введите допустимый номер товара: '))
-        print()
-
-    return choice
 
 if __name__ == '__main__':
     main()
