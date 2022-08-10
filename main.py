@@ -1,65 +1,60 @@
-class Employee:
-    def __init__(self, name, number):
+class Person:
+    def __init__(self, name, address, phone):
         self.__name = name
-        self.__number = number
+        self.__address = address
+        self.__phone = phone
 
     def set_name(self, name):
             self.__name = name
 
-    def set_number(self, number):
-            self.__number = number
+    def set_address(self, address):
+            self.__address = address
+
+    def set_number(self, phone):
+            self.__phone = phone
 
     def get_name(self):
             return self.__name
 
+    def get_addressr(self):
+            return self.__address
+
+    def get_phone(self):
+            return self.__phone
+
+
+class Customer(Person):
+    def __init__(self, name, address, phone, number, mailing):
+        Person.__init__(self, name, address, phone)
+        self.__number = number
+        self.__mailing = mailing
+
+    def set_number(self, number):
+        self.__number = number
+
+    def set_mailing(self, mailing):
+        self.__mailing = mailing
+
     def get_number(self):
-            return self.__number
+        return self.__number
 
+    def get_mailing(self):
+        return self.__mailing
 
-class ProdactionWorker(Employee):
-    def __init__(self, name, number, shift, pay):
-        Employee.__init__(self, name, number)
-        self.__shift = shift
-        self.__pay = pay
-
-    def set_shift(self, shift):
-        self.__shift = shift
-
-    def set_pay(self, pay):
-        self.__pay = pay
-
-    def get_shift(self):
-        return self.__shift
-
-    def get_pay(self):
-        return self.__pay
-
-class ShiftSupervisor(Employee):
-    def __init__(self, name, number, year_pay, premium_pay):
-        Employee.__init__(self, name, number)
-        self.__year_pay = year_pay
-        self.__premium_pay = premium_pay
-
-    def set_year_pay(self, year_pay):
-        self.__year_pay = year_pay
-
-    def set_premium_pay(self, premium_pay):
-        self.__premium_pay = premium_pay
-
-    def get_year_pay(self):
-        return self.__year_pay
-
-    def get_premium_pay(self):
-        return self.__premium_pay
 
 def main():
     name = input("Write name:")
+    address = input("Write address:")
+    phone = input("Write phone:")
     number = int(input("Write number:"))
-    year_pay = int(input("Write year_pay:"))
-    premium_pay = float(input("Write premium_pay:"))
-    worker1 = ShiftSupervisor(name, number, year_pay, premium_pay)
+    mailing = input("Do you want mailing: y or n").lower()
+    customer = Customer(name, address, phone, number, mailing)
+    if mailing == "y":
+        customer.set_mailing(True)
+    else:
+        customer.set_mailing(False)
 
-    print(worker1.get_name(), worker1.get_number(), worker1.get_premium_pay(), worker1.get_year_pay())
+    print(customer.get_name(), customer.get_phone(), customer.get_number(), customer.get_addressr(), customer.get_mailing())
 
 if __name__ == '__main__':
     main()
