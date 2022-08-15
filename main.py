@@ -1,15 +1,15 @@
 
 def main():
-    print(rec_print(2, 3))
+    print(ackerman(2, 3))
 
 
-def rec_print(x, y):
+def ackerman(x, y):
     if x == 0:
         return y + 1
     elif y == 0:
-        return rec_print(x - 1, 1)
+        return ackerman(x - 1, 1)
     else:
-        return rec_print(x - 1, rec_print(x, y - 1))
+        return ackerman(x - 1, ackerman(x, y - 1))
 
 
 
