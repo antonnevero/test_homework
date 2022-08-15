@@ -1,13 +1,13 @@
 
 def main():
-    print(rec_print(50))
+    print(rec_print(2, 50))
 
 
-def rec_print(x):
-    if x == 0:
-        return x
+def rec_print(x, y):
+    if y == 0:
+        return 1
     else:
-        return x + rec_print(x-1)
+        return x * rec_print(x, y - 1)
 
 
 
