@@ -1,14 +1,13 @@
 
 def main():
-    print(rec_print([5, 7, 9, 3]))
+    print(rec_print(50))
 
 
 def rec_print(x):
-    n = len(x)
-    if n == 1:
-        return x[0]
+    if x == 0:
+        return x
     else:
-        return x[n-1] + rec_print(x[0:n-1])
+        return x + rec_print(x-1)
 
 
 
